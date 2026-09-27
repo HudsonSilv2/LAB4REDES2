@@ -1,0 +1,15 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Sistema IoT - Diagrama C4 de Contexto
+
+Person(operator, "Operador", "Monitora os dados coletados pelos dispositivos IoT.")
+
+System(iotSystem, "Sistema IoT de Monitoramento", "Recebe e processa eventos de temperatura utilizando MQTT.")
+
+System_Ext(devices, "Dispositivos IoT", "Sensores responsáveis pela coleta de temperatura.")
+
+Rel(devices, iotSystem, "Publicam eventos de temperatura", "MQTT")
+Rel(operator, iotSystem, "Monitora os eventos processados")
+
+@enduml

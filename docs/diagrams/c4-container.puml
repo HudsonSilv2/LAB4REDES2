@@ -1,0 +1,36 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Sistema IoT - Diagrama C4 de Containers
+
+Person(operator, "Operador", "Responsável pelo monitoramento do sistema.")
+
+System_Boundary(iot, "Sistema IoT") {
+
+    Container(
+        publisher,
+        "Sensor IoT",
+        "Python / Paho MQTT",
+        "Simula um sensor e publica eventos de temperatura."
+    )
+
+    Container(
+        broker,
+        "Broker MQTT",
+        "EMQX / Docker",
+        "Recebe e distribui mensagens MQTT através de tópicos."
+    )
+
+    Container(
+        consumer,
+        "Consumer Service",
+        "Python / Paho MQTT",
+        "Recebe e processa eventos dos dispositivos."
+    )
+}
+
+Rel(publisher, broker, "Publica eventos", "MQTT :1883")
+Rel(broker, consumer, "Distribui eventos", "MQTT :1883")
+Rel(operator, consumer, "Observa dados processados")
+
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+
+title Fluxo MQTT do Sistema IoT
+
+participant "Sensor IoT" as Sensor
+participant "EMQX Broker" as Broker
+participant "Consumer" as Consumer
+
+Sensor -> Broker: CONNECT
+Broker --> Sensor: CONNACK
+
+Consumer -> Broker: CONNECT
+Broker --> Consumer: CONNACK
+
+Consumer -> Broker: SUBSCRIBE\niot/temperature/+
+Broker --> Consumer: SUBACK
+
+loop A cada 2 segundos
+
+    Sensor -> Sensor: Gerar temperatura aleatória
+
+    Sensor -> Broker: PUBLISH\nJSON de temperatura
+
+    Broker -> Consumer: PUBLISH\nEvento MQTT
+
+    Consumer -> Consumer: Processar evento
+
+end
+
+@enduml
+
+@startuml
+
+title Publicação MQTT com QoS 1
+
+participant Publisher
+participant Broker
+participant Consumer
+
+Publisher -> Broker: PUBLISH (QoS 1)
+Broker --> Publisher: PUBACK
+
+Broker -> Consumer: PUBLISH (QoS 1)
+Consumer --> Broker: PUBACK
+
+@enduml
