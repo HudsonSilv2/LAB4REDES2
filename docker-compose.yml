@@ -1,0 +1,20 @@
+services:
+  emqx:
+    image: emqx/emqx:5.8.8
+    container_name: iot-emqx
+    restart: unless-stopped
+
+    ports:
+      - "1883:1883"
+      - "18083:18083"
+
+    environment:
+      EMQX_NODE_NAME: emqx@node1
+
+    volumes:
+      - emqx-data:/opt/emqx/data
+      - emqx-log:/opt/emqx/log
+
+volumes:
+  emqx-data:
+  emqx-log:
